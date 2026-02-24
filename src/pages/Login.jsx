@@ -70,6 +70,7 @@ const styles = {
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#f3f2ef",
+    
   },
   logo: {
     color: "#2557a7",
