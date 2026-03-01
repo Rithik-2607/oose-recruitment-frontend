@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useSavedJobs } from '../context/SavedJobsContext'
 
 const jobs = [
   {
@@ -94,7 +95,8 @@ const jobs = [
 ]
 
 function Jobs() {
-  const [selected, setSelected] = useState(jobs[0]);
+  const [selected, setSelected] = useState(jobs[0])
+  const { toggleSaveJob, isJobSaved } = useSavedJobs()
   return (
     <div style={{ display: 'flex', gap: 30, margin: '40px 0', justifyContent: 'center' }}>
       {/* Left: Job List */}
@@ -133,7 +135,7 @@ function Jobs() {
         <div style={{ color: '#2557a7', fontWeight: 500 }}>{selected.company} <span style={{ color: '#222', fontWeight: 400, fontSize: 15 }}>• {selected.rating} ★</span></div>
         <div style={{ color: '#666', fontSize: 15, marginBottom: 18 }}>{selected.location}</div>
         <button style={{ background: '#2557a7', color: '#fff', border: 'none', borderRadius: 6, padding: '8px 22px', fontWeight: 500, fontSize: 16, marginBottom: 18 }}>Apply now</button>
-        <span style={{ marginLeft: 10, fontSize: 20, cursor: 'pointer' }} title="Save">🔖</span>
+        <span style={{ marginLeft: 10, fontSize: 20, cursor: 'pointer', opacity: isJobSaved(selected.id) ? 1 : 0.6 }} title="Save" onClick={() => toggleSaveJob(selected)}>🔖</span>
         <span style={{ marginLeft: 10, fontSize: 20, cursor: 'pointer' }} title="Not Interested">🚫</span>
         <span style={{ marginLeft: 10, fontSize: 20, cursor: 'pointer' }} title="Share">🔗</span>
         <div style={{ marginTop: 30 }}>
