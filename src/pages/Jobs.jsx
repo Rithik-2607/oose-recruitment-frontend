@@ -95,15 +95,42 @@ const jobs = [
 ]
 
 function Jobs() {
-  const [selected, setSelected] = useState(jobs[0])
+  const [selected, setSelected] = useState(() => {
+    // Check if a search title is set from Home page
+    const searchTitle = localStorage.getItem("workquest_search_title");
+    if (searchTitle) {
+      const found = jobs.find(j => j.title.toLowerCase().includes(searchTitle.toLowerCase()));
+      localStorage.removeItem("workquest_search_title");
+      return found || jobs[0];
+    }
+    return jobs[0];
+  })
   const { toggleSaveJob, isJobSaved } = useSavedJobs()
+
   return (
-    <div style={{ display: 'flex', gap: 30, margin: '40px 0', justifyContent: 'center' }}>
+    <div
+      style={{
+        display: 'flex',
+        width: '100%',
+        minHeight: 'calc(100vh - 70px)',
+        alignItems: 'stretch',   // 🔥 ensures equal height columns
+      }}
+    >
       {/* Left: Job List */}
-      <div style={{ width: 400, background: '#fff', borderRadius: 12, boxShadow: '0 2px 8px #eee', padding: 20 }}>
-        <h2 style={{ fontSize: 20, marginBottom: 18 }}>Jobs for you</h2>
-        <div style={{ fontSize: 13, color: '#888', marginBottom: 18 }}>Jobs based on your activity on WorkQuest</div>
-        <div>
+      <div
+        style={{
+          width: 500,
+          background: '#fff',
+          borderRight: '2px solid #F67D31',
+          overflowY: 'auto',
+        }}
+      >
+        <div style={{ padding: 30 }}>
+          <h2 style={{ fontSize: 22, marginBottom: 22 }}>Jobs for you</h2>
+          <div style={{ fontSize: 15, color: '#888', marginBottom: 22 }}>
+            Jobs based on your activity on WorkQuest
+          </div>
+
           {jobs.map(job => (
             <div
               key={job.id}
@@ -122,28 +149,106 @@ function Jobs() {
               <div style={{ color: '#333', fontSize: 14 }}>{job.company}</div>
               <div style={{ color: '#666', fontSize: 13 }}>{job.location}</div>
               <div style={{ marginTop: 6, fontSize: 13 }}>
-                <span style={{ background: '#eaf1fb', color: '#2557a7', borderRadius: 4, padding: '2px 8px', marginRight: 8 }}>{job.type}</span>
-                <span style={{ color: '#2557a7', fontWeight: 500 }}>Easily apply</span>
+                <span
+                  style={{
+                    background: '#eaf1fb',
+                    color: '#2557a7',
+                    borderRadius: 4,
+                    padding: '2px 8px',
+                    marginRight: 8,
+                  }}
+                >
+                  {job.type}
+                </span>
+                <span style={{ color: '#2557a7', fontWeight: 500 }}>
+                  Easily apply
+                </span>
               </div>
             </div>
           ))}
         </div>
       </div>
+
       {/* Right: Job Details */}
-      <div style={{ flex: 1, background: '#fff', borderRadius: 12, boxShadow: '0 2px 8px #eee', padding: 30, minWidth: 350 }}>
-        <div style={{ fontSize: 22, fontWeight: 600, marginBottom: 6 }}>{selected.title}</div>
-        <div style={{ color: '#2557a7', fontWeight: 500 }}>{selected.company} <span style={{ color: '#222', fontWeight: 400, fontSize: 15 }}>• {selected.rating} ★</span></div>
-        <div style={{ color: '#666', fontSize: 15, marginBottom: 18 }}>{selected.location}</div>
-        <button style={{ background: '#2557a7', color: '#fff', border: 'none', borderRadius: 6, padding: '8px 22px', fontWeight: 500, fontSize: 16, marginBottom: 18 }}>Apply now</button>
-        <span style={{ marginLeft: 10, fontSize: 20, cursor: 'pointer', opacity: isJobSaved(selected.id) ? 1 : 0.6 }} title="Save" onClick={() => toggleSaveJob(selected)}>🔖</span>
-        <span style={{ marginLeft: 10, fontSize: 20, cursor: 'pointer' }} title="Not Interested">🚫</span>
-        <span style={{ marginLeft: 10, fontSize: 20, cursor: 'pointer' }} title="Share">🔗</span>
+      <div
+        style={{
+          flex: 1,
+          background: '#fff',
+          padding: 50,
+          overflowY: 'auto',
+        }}
+      >
+        <div style={{ fontSize: 22, fontWeight: 600, marginBottom: 6 }}>
+          {selected.title}
+        </div>
+
+        <div style={{ color: '#2557a7', fontWeight: 500 }}>
+          {selected.company}
+          <span style={{ color: '#222', fontWeight: 400, fontSize: 15 }}>
+            {' '}• {selected.rating} ★
+          </span>
+        </div>
+
+        <div style={{ color: '#666', fontSize: 15, marginBottom: 18 }}>
+          {selected.location}
+        </div>
+
+        <button
+          style={{
+            background: '#2557a7',
+            color: '#fff',
+            border: 'none',
+            borderRadius: 6,
+            padding: '8px 22px',
+            fontWeight: 500,
+            fontSize: 16,
+            marginBottom: 18,
+          }}
+        >
+          Apply now
+        </button>
+
+        <span
+          style={{
+            marginLeft: 10,
+            fontSize: 20,
+            cursor: 'pointer',
+            opacity: isJobSaved(selected.id) ? 1 : 0.6,
+          }}
+          title="Save"
+          onClick={() => toggleSaveJob(selected)}
+        >
+          🔖
+        </span>
+
+        <span style={{ marginLeft: 10, fontSize: 20, cursor: 'pointer' }} title="Not Interested">
+          🚫
+        </span>
+
+        <span style={{ marginLeft: 10, fontSize: 20, cursor: 'pointer' }} title="Share">
+          🔗
+        </span>
+
         <div style={{ marginTop: 30 }}>
-          <div style={{ fontWeight: 600, fontSize: 17, marginBottom: 8 }}>Job details</div>
-          <div style={{ marginBottom: 8 }}><b>Job type:</b> {selected.type}</div>
-          <div style={{ marginBottom: 8 }}><b>Location:</b> {selected.location}</div>
-          <div style={{ marginBottom: 8 }}><b>Full job description:</b></div>
-          <div style={{ color: '#444', fontSize: 15 }}>{selected.description}</div>
+          <div style={{ fontWeight: 600, fontSize: 17, marginBottom: 8 }}>
+            Job details
+          </div>
+
+          <div style={{ marginBottom: 8 }}>
+            <b>Job type:</b> {selected.type}
+          </div>
+
+          <div style={{ marginBottom: 8 }}>
+            <b>Location:</b> {selected.location}
+          </div>
+
+          <div style={{ marginBottom: 8 }}>
+            <b>Full job description:</b>
+          </div>
+
+          <div style={{ color: '#444', fontSize: 15 }}>
+            {selected.description}
+          </div>
         </div>
       </div>
     </div>

@@ -28,49 +28,56 @@ const Login = () => {
   };
 
   return (
-    <div style={styles.container} className="auth">
-      <h1 style={styles.logo}>WorkQuest</h1>
+    <>
+      <div style={styles.authBg}></div>
+      <div style={styles.container} className="auth">
+        <h1 style={styles.logo}>WorkQuest</h1>
 
-      <form style={styles.form} onSubmit={handleLogin}>
-        <input
-          type="text"
-          placeholder="Enter Email"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          style={styles.input}
-        />
+        <form style={styles.form} onSubmit={handleLogin}>
+          <input
+            type="text"
+            placeholder="Enter Email"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            style={styles.input}
+          />
 
-        <input
-          type="password"
-          placeholder="Enter Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          style={styles.input}
-        />
+          <input
+            type="password"
+            placeholder="Enter Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            style={styles.input}
+          />
 
-        <button type="submit" style={styles.button}>
-          Login
-        </button>
-      </form>
+          <button type="submit" style={styles.button}>
+            Login
+          </button>
+        </form>
 
-      <div style={{ marginTop: 10 }}>
-        New user? <Link to="/register">Register</Link>
+        <div style={{ marginTop: 10 }}>
+          New user? <Link to="/register">Register</Link>
+        </div>
+
+        {message && <p style={styles.message}>{message}</p>}
       </div>
-
-      {message && <p style={styles.message}>{message}</p>}
-    </div>
+    </>
   );
 };
 
 const styles = {
   container: {
-    height: "100%",
+    height: "auto", // Restore to previous (not 100%)
+    minHeight: "unset", // Remove forced full viewport height
+    width: "400px", // Optional: set a fixed width for the container
+    padding: "40px 30px",
+    borderRadius: "10px",
+    boxShadow: "0 2px 16px rgba(0,0,0,0.07)",
+    backgroundColor: "#f3f2ef",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#f3f2ef",
-    
   },
   logo: {
     color: "#2557a7",
@@ -98,6 +105,15 @@ const styles = {
   message: {
     marginTop: "20px",
     fontWeight: "bold",
+  },
+  authBg: {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    width: "100vw",
+    height: "100vh",
+    background: "#F67D31",
+    zIndex: -1,
   },
 };
 
