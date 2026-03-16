@@ -112,7 +112,7 @@ const styles = {
     left: 0,
     width: "100vw",
     height: "100vh",
-    background: "#F67D31",
+    background: "linear-gradient(135deg, #f3f7fb 0%, #e6eef8 100%)",
     zIndex: -1,
   },
 };

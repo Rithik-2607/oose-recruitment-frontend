@@ -121,7 +121,7 @@ function Jobs() {
         style={{
           width: 500,
           background: '#fff',
-          borderRight: '2px solid #F67D31',
+          borderRight: '2px solid #2557a7',
           overflowY: 'auto',
         }}
       >
